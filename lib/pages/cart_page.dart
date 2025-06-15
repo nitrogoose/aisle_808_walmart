@@ -24,27 +24,45 @@ class CartPage extends StatelessWidget {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 String itemName = items.keys.elementAt(index);
-                int quantity = items[itemName]!;
+                int quantity = items[itemName]!['count'];
+                double price = items[itemName]!['price'];
+                double totalItemPrice = price * quantity;
+
                 return ListTile(
                   title: Text(itemName),
-                  trailing: Text('Qty: $quantity'),
+                  subtitle: Text('₹${price.toStringAsFixed(2)} × $quantity'),
+                  trailing: Text('₹${totalItemPrice.toStringAsFixed(2)}'),
                 );
               },
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                textStyle: const TextStyle(fontSize: 18),
-                minimumSize: const Size(double.infinity, 50),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/checkout');
-              },
-              child: const Text('Proceed to Checkout'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Total: ₹${cart.totalPrice.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.end,
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    textStyle: const TextStyle(fontSize: 18),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/checkout');
+                  },
+                  child: const Text('Proceed to Checkout'),
+                ),
+              ],
             ),
           ),
         ],
